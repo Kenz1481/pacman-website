@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Pac-Man</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      font-family: sans-serif;
+    }#gameCanvas {
+  background: #000;
+  display: block;
+  margin: 10px auto;
+  border: 2px solid yellow;
+  touch-action: none;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 200px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  background: yellow;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Mobile Pac-Man</h1>
+  <canvas id="gameCanvas" width="300" height="300"></canvas>
+  <div class="controls">
+    <button class="btn" onclick="move('up')">Up</button>
+    <button class="btn" onclick="move('left')">Left</button>
+    <button class="btn" onclick="move('down')">Down</button>
+    <button class="btn" onclick="move('right')">Right</button>
+  </div>  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const gridSize = 15;
+    const tileSize = canvas.width / gridSize;
+    let pacman = { x: 7, y: 7, dir: 'left' };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'yellow';
+      ctx.beginPath();
+      ctx.arc(pacman.x * tileSize + tileSize/2, pacman.y * tileSize + tileSize/2, tileSize/2 - 2, 0.25 * Math.PI, 1.75 * Math.PI);
+      ctx.lineTo(pacman.x * tileSize + tileSize/2, pacman.y * tileSize + tileSize/2);
+      ctx.fill();
+    }
+
+    function move(direction) {
+      pacman.dir = direction;
+    }
+
+    function update() {
+      switch (pacman.dir) {
+        case 'left': pacman.x = Math.max(0, pacman.x - 1); break;
+        case 'right': pacman.x = Math.min(gridSize - 1, pacman.x + 1); break;
+        case 'up': pacman.y = Math.max(0, pacman.y - 1); break;
+        case 'down': pacman.y = Math.min(gridSize - 1, pacman.y + 1); break;
+      }
+      draw();
+    }
+
+    setInterval(update, 300);
+    draw();
+  </script></body>
+</html>
